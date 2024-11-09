@@ -34,14 +34,14 @@ jobs:
         xcodebuild -exportArchive -archivePath $PWD/build/Runner.xcarchive -exportOptionsPlist $PWD/ExportOptions.plist -exportPath $PWD/build
 
     # Upload the .ipa file to GitHub Releases (optional)
-    - name: Upload IPA to GitHub Releases
-      uses: ncipollo/release-action@v1
-      with:
-        tag: "v1.0.0"  # Set version tag
-        name: "Release v1.0.0"
-        body: "Automated release of iOS IPA"
-        artifacts: "ios/build/*.ipa"  # Path to the IPA file
-        token: ${{ secrets.MY_APP_TOKEN }}
+    # - name: Upload IPA to GitHub Releases
+    #   uses: ncipollo/release-action@v1
+    #   with:
+    #     tag: "v1.0.0"  # Set version tag
+    #     name: "Release v1.0.0"
+    #     body: "Automated release of iOS IPA"
+    #     artifacts: "ios/build/*.ipa"  # Path to the IPA file
+    #     token: ${{ secrets.MY_APP_TOKEN }}
 
   build_apk:
     name: Build APK
@@ -57,11 +57,11 @@ jobs:
     - run: flutter pub get
     - run: flutter test
     - run: flutter build apk --release --split-per-abi
-    - name: Push APK to Releases
-      uses: ncipollo/release-action@v1
-      with:
-        tag: "v1.0.0"
-        name: "Release v1.0.0"
-        body: "Automated release of APK files."
-        artifacts: "build/app/outputs/apk/release/*.apk"
-        token: ${{ secrets.MY_APP_TOKEN }}
+    # - name: Push APK to Releases
+    #   uses: ncipollo/release-action@v1
+    #   with:
+    #     tag: "v1.0.0"
+    #     name: "Release v1.0.0"
+    #     body: "Automated release of APK files."
+    #     artifacts: "build/app/outputs/apk/release/*.apk"
+    #     token: ${{ secrets.MY_APP_TOKEN }}
