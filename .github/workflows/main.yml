@@ -1,7 +1,48 @@
 on: push
-name: Test, Build and Release apk
+name: Test, Build and Release iOS and APK
 jobs:
-  build:
+  # build_ios:
+  #   name: Build iOS
+  #   runs-on: macos-latest
+  #   steps:
+  #   - uses: actions/checkout@v1
+    
+  #   # Set up Flutter environment
+  #   - uses: subosito/flutter-action@v1
+  #     with:
+  #       flutter-version: '3.24.3'
+    
+  #   # Install dependencies
+  #   - run: flutter pub get
+    
+  #   # Run tests (optional)
+  #   - run: flutter test
+    
+  #   # Install CocoaPods dependencies for iOS
+  #   - run: |
+  #       cd ios
+  #       pod install
+    
+  #   # Build the iOS app (Release mode)
+  #   - run: flutter build ios --release --no-codesign
+
+  #   # Optionally, to archive the build as an .ipa file (useful for App Store or TestFlight)
+  #   - name: Archive iOS app
+  #     run: |
+  #       cd ios
+  #       xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Release archive -archivePath $PWD/build/Runner.xcarchive
+  #       xcodebuild -exportArchive -archivePath $PWD/build/Runner.xcarchive -exportOptionsPlist $PWD/ExportOptions.plist -exportPath $PWD/build
+
+  #   # Upload the .ipa file to GitHub Releases (optional)
+  #   - name: Upload IPA to GitHub Releases
+  #     uses: ncipollo/release-action@v1
+  #     with:
+  #       tag: "v1.0.0"  # Set version tag
+  #       name: "Release v1.0.0"
+  #       body: "Automated release of iOS IPA"
+  #       artifacts: "ios/build/*.ipa"  # Path to the IPA file
+
+  build_apk:
     name: Build APK
     runs-on: ubuntu-latest
     steps:
@@ -18,9 +59,8 @@ jobs:
     - name: Push APK to Releases
       uses: ncipollo/release-action@v1
       with:
-        tag: "v1.0.0"  # Specify a tag for the release (you may want to automate versioning)
-        name: "Release v1.0.0"  # Set the release name
-        body: "Automated release of APK files."  # Optional description of the release
-        draft: false  # Set to true if you want to create a draft release
-        prerelease: false  # Set to true for a pre-release
-        artifacts: "build/app/outputs/apk/release/*.apk"  # Path to the release APKs
+        tag: "v1.0.0"
+        name: "Release v1.0.0"
+        body: "Automated release of APK files."
+        artifacts: "build/app/outputs/apk/release/*.apk"
+        token: ${{ secrets.MY_APP_TOKEN }}
