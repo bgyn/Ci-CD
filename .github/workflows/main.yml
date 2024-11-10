@@ -15,7 +15,7 @@ jobs:
     - run: flutter pub get
     - run: flutter test
     - run: flutter build apk --release
-    - run : flutter build ipa -no-codesign
+    - run : flutter build ipa --no-codesign
     - run : |
         cd build
         tar -czf ios_build.tar.gz ios
