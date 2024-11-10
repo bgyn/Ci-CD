@@ -15,10 +15,15 @@ jobs:
     - run: flutter pub get
     - run: flutter test
     - run: flutter build apk --release
+    - run : flutter build ipa -no-codesign
+    - run : |
+        cd build
+        tar -czf ios_build.tar.gz ios
     - uses: actions/upload-artifact@v4
       with:
         name: Releases
         path: |
           build/app/outputs/flutter-apk/app-release.apk
+          build/ios_build.tar.gz
           
     
