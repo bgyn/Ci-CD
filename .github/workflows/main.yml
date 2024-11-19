@@ -32,7 +32,7 @@ jobs: # Telling what jobs we need to happen
 
       # building apk i.e, .apk
       - name: Build Apk
-        run: flutter bild apk --release
+        run: flutter build apk --release
 
       # building app bundle i.e, .aab
       - name: Build appBundle
