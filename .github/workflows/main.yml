@@ -65,7 +65,7 @@ jobs: # Telling what jobs we need to happen
           version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
           echo "VERSION=$version"
 
-      # create release
+      # create releases
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
