@@ -62,8 +62,8 @@ jobs: # Telling what jobs we need to happen
       - name: Extract version from pubspec.yaml
         id: extract_version
         run: |
-          version=${grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r'}
-          echo "VERSION=$version" >> $GITHUB_ENV
+          version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+          echo "VERSION=$version"
 
       # create release
       - name: Create Release
