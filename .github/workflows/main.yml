@@ -2,8 +2,8 @@ name: "Build"
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - "v*"
 
 jobs: # Telling what jobs we need to happen
   build: # Specify the building name and machine
@@ -65,19 +65,10 @@ jobs: # Telling what jobs we need to happen
           version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
           echo "VERSION=$version"
       
-      - name: Generate dynamic tag
-        id: generate_tag
-        run: |
-          # Example dynamic tag: v1.0.0-build-[timestamp]
-          TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-          TAG_NAME="v1.0.0-build-${TIMESTAMP}"
-          echo "Generated tag: $TAG_NAME"
-          echo "::set-output name=tag::$TAG_NAME"
-
       # create releases
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.generate_tag.outputs.tag }}
+          tag: ${{ github.ref_name }}
           artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
           token: ${{ secrets.MY_APP_TOKEN }}
