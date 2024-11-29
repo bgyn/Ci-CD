@@ -37,7 +37,7 @@ jobs: # Telling what jobs we need to happen
       - name: Decode Keystore
         env:
           ENCODED_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 }}
-          DECODED_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
+          # DECODED_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
         run : |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
       
