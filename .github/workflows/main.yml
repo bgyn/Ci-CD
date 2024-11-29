@@ -39,25 +39,24 @@ jobs: # Telling what jobs we need to happen
           ENCODED_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 }}
           DECODED_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
         run : |
-          echo $ENCODED_KEYSTORE | base64 --decode > $DECODED_KEYSTORE_PATH
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+      
+      # create keystore.properties
+      - name: Create Keystore Properties
+        run: |
+          run: |
+            echo "storePassword=${{ secrets.RELEASE_SIGNING_PASSWORD }}" > android/key.properties
+            echo "keyPassword=${{ secrets.RELEASE_SIGNING_PASSWORD }}" >> android/key.properties
+            echo "keyAlias=${{ secrets.RELEASE_SIGNING_ALIAS }}" >> android/key.properties
+            echo "storeFile=keystore.jks" >> android/key.properties
         
 
       # building apk i.e, .apk
       - name: Build Apk
-        env:
-          RELEASE_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
-          RELEASE_SIGNING_PASSWORD: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
-          RELEASE_SIGNING_USERNAME: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
-          RELEASE_SIGNING_ALIAS: ${{ secrets.RELEASE_SIGNING_ALIAS }}
         run: flutter build apk --release
 
       # building app bundle i.e, .aab
       - name: Build appBundle
-        env:
-          RELEASE_KEYSTORE_PATH: ${{ secrets.RELEASE_KEYSTORE_PATH }}
-          RELEASE_SIGNING_PASSWORD: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
-          RELEASE_SIGNING_USERNAME: ${{ secrets.RELEASE_SIGNING_PASSWORD }}
-          RELEASE_SIGNING_ALIAS: ${{ secrets.RELEASE_SIGNING_ALIAS }}
         run: flutter build appbundle
 
       # building IPA (iOS Build)
