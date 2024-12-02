@@ -65,10 +65,7 @@ jobs: # Telling what jobs we need to happen
 
       # Archive iOS and create .ipa file
       - name: Build IPA
-        run: |
-          cd ios
-          xcodebuild -workspace Runner.xcworkspace -scheme Runner -archivePath build/Runner.xcarchive archive
-          xcodebuild -exportArchive -archivePath build/Runner.xcarchive -exportPath build/Runner.ipa -exportOptionsPlist ios/ExportOptions.plist
+        run: flutter build ipa --no-codesign
 
       # compress archives and IPs
       - name: Compress Archives and IPAs
