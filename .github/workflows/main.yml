@@ -59,9 +59,16 @@ jobs: # Telling what jobs we need to happen
       - name: Build appBundle
         run: flutter build appbundle
 
-      # building IPA (iOS Build)
+      # Build iOS (This step generates the iOS build folder)
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
+
+      # Archive iOS and create .ipa file
       - name: Build IPA
-        run: flutter build ipa --no-codesign
+        run: |
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner -archivePath build/Runner.xcarchive archive
+          xcodebuild -exportArchive -archivePath build/Runner.xcarchive -exportPath build/Runner.ipa -exportOptionsPlist ios/ExportOptions.plist
 
       # compress archives and IPs
       - name: Compress Archives and IPAs
@@ -77,7 +84,8 @@ jobs: # Telling what jobs we need to happen
           path: |
             build/app/outputs/flutter-apk/app-release.apk
             build/app/outputs/bundle/release/app-release.aab
-            build/ios_build.tar.g
+            build/Runner.ipa
+            build/ios_build.tar.gz
 
       # extract version
       - name: Extract version from pubspec.yaml
@@ -91,5 +99,5 @@ jobs: # Telling what jobs we need to happen
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ github.ref_name }}
-          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/Runner.ipa"
           token: ${{ secrets.MY_APP_TOKEN }}
